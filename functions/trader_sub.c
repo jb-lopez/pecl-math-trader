@@ -37,7 +37,7 @@
 ZEND_EXTERN_MODULE_GLOBALS(trader)
 
 /* {{{ proto array trader_sub(array real0, array real1)
-	Vector Arithmetic Substraction */
+	Vector Arithmetic Subtraction */
 PHP_FUNCTION(trader_sub)
 {
 	int optimalOutAlloc, lookback;
