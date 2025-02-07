@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -204,7 +207,7 @@
 
    /* Insert TA function code here. */
 
-   /* The following algorithm is base on the original 
+   /* The following algorithm is base on the original
     * work from Wilder's and shall represent the
     * original idea behind the classic RSI.
     *
@@ -214,14 +217,14 @@
     * previous one (no gain or loss).
     */
 
-   /* If changing this function, please check also CMO 
-    * which is mostly identical (just different in one step 
+   /* If changing this function, please check also CMO
+    * which is mostly identical (just different in one step
     * of calculation).
     */
 
    VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
    VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
-   
+
    /* Adjust startIdx to account for the lookback period. */
    lookbackTotal = LOOKBACK_CALL(RSI)( optInTimePeriod );
 
@@ -251,7 +254,7 @@
       return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
    }
 
-   /* Accumulate Wilder's "Average Gain" and "Average Loss" 
+   /* Accumulate Wilder's "Average Gain" and "Average Loss"
     * among the initial period.
     */
    today = startIdx-lookbackTotal;
@@ -267,10 +270,10 @@
     * no need to calculate since this
     * first value will be surely skip.
     */
-   if( (unstablePeriod == 0) && 
+   if( (unstablePeriod == 0) &&
        (TA_GLOBALS_COMPATIBILITY == ENUM_VALUE(Compatibility,TA_COMPATIBILITY_METASTOCK,Metastock)))
    {
-      /* Preserve prevValue because it may get 
+      /* Preserve prevValue because it may get
        * overwritten by the output.
        *(because output ptr could be the same as input ptr).
        */
@@ -337,10 +340,10 @@
          prevGain += tempValue2;
    }
 
-   
+
    /* Subsequent prevLoss and prevGain are smoothed
     * using the previous values (Wilder's approach).
-    *  1) Multiply the previous by 'period-1'. 
+    *  1) Multiply the previous by 'period-1'.
     *  2) Add today value.
     *  3) Divide by 'period'.
     */
@@ -365,9 +368,9 @@
    }
    else
    {
-      /* Skip the unstable period. Do the processing 
+      /* Skip the unstable period. Do the processing
        * but do not write it in the output.
-       */   
+       */
       while( today < startIdx )
       {
          tempValue1 = inReal[today];
@@ -423,7 +426,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -511,7 +513,7 @@
 /* Generated */    today = startIdx-lookbackTotal;
 /* Generated */    prevValue = inReal[today];
 /* Generated */    unstablePeriod = TA_GLOBALS_UNSTABLE_PERIOD(TA_FUNC_UNST_RSI,Rsi);
-/* Generated */    if( (unstablePeriod == 0) && 
+/* Generated */    if( (unstablePeriod == 0) &&
 /* Generated */        (TA_GLOBALS_COMPATIBILITY == ENUM_VALUE(Compatibility,TA_COMPATIBILITY_METASTOCK,Metastock)))
 /* Generated */    {
 /* Generated */       savePrevValue = prevValue;

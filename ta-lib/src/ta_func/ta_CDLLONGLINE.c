@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  071704 AC   Creation           
+ *  071704 AC   Creation
  *
  */
 
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -206,7 +209,7 @@
    BodyTrailingIdx = startIdx - TA_CANDLEAVGPERIOD(BodyLong);
    ShadowPeriodTotal = 0;
    ShadowTrailingIdx = startIdx - TA_CANDLEAVGPERIOD(ShadowShort);
-   
+
    i = BodyTrailingIdx;
    while( i < startIdx ) {
         BodyPeriodTotal += TA_CANDLERANGE( BodyLong, i );
@@ -227,9 +230,6 @@
     */
    outIdx = 0;
 
-#ifdef TA_LIB_PRO
-      /* Section for code distributed with TA-Lib Pro only. */
-#else
    do
    {
         if( TA_REALBODY(i) > TA_CANDLEAVERAGE( BodyLong, BodyPeriodTotal, i ) &&
@@ -238,16 +238,15 @@
             outInteger[outIdx++] = TA_CANDLECOLOR(i) * 100;
         else
             outInteger[outIdx++] = 0;
-        /* add the current range and subtract the first range: this is done after the pattern recognition 
+        /* add the current range and subtract the first range: this is done after the pattern recognition
          * when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
          */
         BodyPeriodTotal += TA_CANDLERANGE( BodyLong, i ) - TA_CANDLERANGE( BodyLong, BodyTrailingIdx );
         ShadowPeriodTotal += TA_CANDLERANGE( ShadowShort, i ) - TA_CANDLERANGE( ShadowShort, ShadowTrailingIdx );
-        i++; 
+        i++;
         BodyTrailingIdx++;
         ShadowTrailingIdx++;
    } while( i <= endIdx );
-#endif
 
    /* All done. Indicate the output limits and return. */
    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
@@ -259,7 +258,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -348,8 +346,6 @@
 /* Generated */         i++;
 /* Generated */    }
 /* Generated */    outIdx = 0;
-/* Generated */ #ifdef TA_LIB_PRO
-/* Generated */ #else
 /* Generated */    do
 /* Generated */    {
 /* Generated */         if( TA_REALBODY(i) > TA_CANDLEAVERAGE( BodyLong, BodyPeriodTotal, i ) &&
@@ -360,11 +356,10 @@
 /* Generated */             outInteger[outIdx++] = 0;
 /* Generated */         BodyPeriodTotal += TA_CANDLERANGE( BodyLong, i ) - TA_CANDLERANGE( BodyLong, BodyTrailingIdx );
 /* Generated */         ShadowPeriodTotal += TA_CANDLERANGE( ShadowShort, i ) - TA_CANDLERANGE( ShadowShort, ShadowTrailingIdx );
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */         BodyTrailingIdx++;
 /* Generated */         ShadowTrailingIdx++;
 /* Generated */    } while( i <= endIdx );
-/* Generated */ #endif
 /* Generated */    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
 /* Generated */    VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;
 /* Generated */    return ENUM_VALUE(RetCode,TA_SUCCESS,Success);

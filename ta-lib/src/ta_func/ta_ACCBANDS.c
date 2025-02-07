@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -244,7 +247,7 @@
    outputSize = endIdx-startIdx+1;
    bufferSize = outputSize+lookbackTotal;
    ARRAY_ALLOC(tempBuffer1, bufferSize );
-   #if !defined(_JAVA)      
+   #if !defined(_JAVA)
       if( !tempBuffer1 )
 	  {
          VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
@@ -254,7 +257,7 @@
    #endif
 
    ARRAY_ALLOC(tempBuffer2, bufferSize );
-   #if !defined(_JAVA)      
+   #if !defined(_JAVA)
       if( !tempBuffer2 )
 	  {
 		 ARRAY_FREE(tempBuffer1);
@@ -265,9 +268,9 @@
    #endif
 
    /* Calculate the upper/lower band at the same time (no SMA yet).
-    * Must start calculation back enough to cover the lookback 
+    * Must start calculation back enough to cover the lookback
     * required later for the SMA.
-	*/   
+	*/
    for(j=0, i=startIdx-lookbackTotal; i<=endIdx; i++, j++)
    {
 	    tempReal = inHigh[i]+inLow[i];
@@ -286,12 +289,12 @@
 
    /* Calculate the middle band, which is a moving average of the close. */
    retCode = FUNCTION_CALL(SMA)( startIdx, endIdx, inClose,
-                                optInTimePeriod, 
+                                optInTimePeriod,
                                 VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy), outRealMiddleBand );
 
    if( (retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) ) || ((int)VALUE_HANDLE_GET(outNbElementDummy) != outputSize) )
    {
-      ARRAY_FREE( tempBuffer1 ); 
+      ARRAY_FREE( tempBuffer1 );
       ARRAY_FREE( tempBuffer2 );
       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
       VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
@@ -301,13 +304,13 @@
    /* Now let's take the SMA for the upper band. */
    retCode = FUNCTION_CALL_DOUBLE(SMA)( 0, bufferSize-1, tempBuffer1,
                                 optInTimePeriod,
-                                VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy), 
+                                VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy),
 								outRealUpperBand );
 
    if( (retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) ) || ((int)VALUE_HANDLE_GET(outNbElementDummy) != outputSize) )
    {
-      ARRAY_FREE( tempBuffer1 ); 
-      ARRAY_FREE( tempBuffer2 ); 
+      ARRAY_FREE( tempBuffer1 );
+      ARRAY_FREE( tempBuffer2 );
       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
       VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
       return retCode;
@@ -316,11 +319,11 @@
    /* Now let's take the SMA for the lower band. */
    retCode = FUNCTION_CALL_DOUBLE(SMA)( 0, bufferSize-1, tempBuffer2,
                                 optInTimePeriod,
-                                VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy), 
+                                VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy),
 								outRealLowerBand );
 
-   ARRAY_FREE( tempBuffer1 ); 
-   ARRAY_FREE( tempBuffer2 ); 
+   ARRAY_FREE( tempBuffer1 );
+   ARRAY_FREE( tempBuffer2 );
 
    if( (retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) ) || ((int)VALUE_HANDLE_GET(outNbElementDummy) != outputSize) )
    {
@@ -338,7 +341,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -436,7 +438,7 @@
 /* Generated */    outputSize = endIdx-startIdx+1;
 /* Generated */    bufferSize = outputSize+lookbackTotal;
 /* Generated */    ARRAY_ALLOC(tempBuffer1, bufferSize );
-/* Generated */    #if !defined(_JAVA)      
+/* Generated */    #if !defined(_JAVA)
 /* Generated */       if( !tempBuffer1 )
 /* Generated */ 	  {
 /* Generated */          VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
@@ -445,7 +447,7 @@
 /* Generated */ 	  }
 /* Generated */    #endif
 /* Generated */    ARRAY_ALLOC(tempBuffer2, bufferSize );
-/* Generated */    #if !defined(_JAVA)      
+/* Generated */    #if !defined(_JAVA)
 /* Generated */       if( !tempBuffer2 )
 /* Generated */ 	  {
 /* Generated */ 		 ARRAY_FREE(tempBuffer1);
@@ -470,11 +472,11 @@
 /* Generated */ 		}
 /* Generated */    }
 /* Generated */    retCode = FUNCTION_CALL(SMA)( startIdx, endIdx, inClose,
-/* Generated */                                 optInTimePeriod, 
+/* Generated */                                 optInTimePeriod,
 /* Generated */                                 VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy), outRealMiddleBand );
 /* Generated */    if( (retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) ) || ((int)VALUE_HANDLE_GET(outNbElementDummy) != outputSize) )
 /* Generated */    {
-/* Generated */       ARRAY_FREE( tempBuffer1 ); 
+/* Generated */       ARRAY_FREE( tempBuffer1 );
 /* Generated */       ARRAY_FREE( tempBuffer2 );
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
@@ -482,22 +484,22 @@
 /* Generated */    }
 /* Generated */    retCode = FUNCTION_CALL_DOUBLE(SMA)( 0, bufferSize-1, tempBuffer1,
 /* Generated */                                 optInTimePeriod,
-/* Generated */                                 VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy), 
+/* Generated */                                 VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy),
 /* Generated */ 								outRealUpperBand );
 /* Generated */    if( (retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) ) || ((int)VALUE_HANDLE_GET(outNbElementDummy) != outputSize) )
 /* Generated */    {
-/* Generated */       ARRAY_FREE( tempBuffer1 ); 
-/* Generated */       ARRAY_FREE( tempBuffer2 ); 
+/* Generated */       ARRAY_FREE( tempBuffer1 );
+/* Generated */       ARRAY_FREE( tempBuffer2 );
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
 /* Generated */       return retCode;
 /* Generated */    }
 /* Generated */    retCode = FUNCTION_CALL_DOUBLE(SMA)( 0, bufferSize-1, tempBuffer2,
 /* Generated */                                 optInTimePeriod,
-/* Generated */                                 VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy), 
+/* Generated */                                 VALUE_HANDLE_OUT(outBegIdxDummy), VALUE_HANDLE_OUT(outNbElementDummy),
 /* Generated */ 								outRealLowerBand );
-/* Generated */    ARRAY_FREE( tempBuffer1 ); 
-/* Generated */    ARRAY_FREE( tempBuffer2 ); 
+/* Generated */    ARRAY_FREE( tempBuffer1 );
+/* Generated */    ARRAY_FREE( tempBuffer2 );
 /* Generated */    if( (retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) ) || ((int)VALUE_HANDLE_GET(outNbElementDummy) != outputSize) )
 /* Generated */    {
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);

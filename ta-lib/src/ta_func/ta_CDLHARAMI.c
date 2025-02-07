@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  102404 AC   Creation           
+ *  102404 AC   Creation
  *  040309 AC   Increased flexibility to allow real bodies matching
  *              on one end (Greg Morris - "Candlestick charting explained")
  *
@@ -61,6 +61,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -208,7 +211,7 @@
    BodyShortPeriodTotal = 0;
    BodyLongTrailingIdx = startIdx -1 - TA_CANDLEAVGPERIOD(BodyLong);
    BodyShortTrailingIdx = startIdx - TA_CANDLEAVGPERIOD(BodyShort);
-   
+
    i = BodyLongTrailingIdx;
    while( i < startIdx-1 ) {
         BodyLongPeriodTotal += TA_CANDLERANGE( BodyLong, i );
@@ -221,28 +224,21 @@
    }
    i = startIdx;
 
-#ifdef TA_LIB_PRO
-      /* Section for code distributed with TA-Lib Pro only. */
-#endif
-
    /* Proceed with the calculation for the requested range.
     * Must have:
     * - first candle: long white (black) real body
-    * - second candle: short real body totally engulfed by the first 
+    * - second candle: short real body totally engulfed by the first
     * The meaning of "short" and "long" is specified with TA_SetCandleSettings
     * outInteger is positive (1 to 100) when bullish or negative (-1 to -100) when bearish:
     * - 100 is returned when the first candle's real body begins before and ends after the second candle's real body
     * - 80 is returned when the two real bodies match on one end (Greg Morris contemplate this case in his book
     *   "Candlestick charting explained")
-    * The user should consider that a harami is significant when it appears in a downtrend if bullish or 
+    * The user should consider that a harami is significant when it appears in a downtrend if bullish or
     * in an uptrend when bearish, while this function does not consider the trend
     */
    outIdx = 0;
    do
    {
-#ifdef TA_LIB_PRO
-      /* Section for code distributed with TA-Lib Pro only. */
-#else
 	    if( TA_REALBODY(i-1) > TA_CANDLEAVERAGE( BodyLong, BodyLongPeriodTotal, i-1 ) &&         // 1st: long
             TA_REALBODY(i) <= TA_CANDLEAVERAGE( BodyShort, BodyShortPeriodTotal, i )             // 2nd: short
           )
@@ -250,7 +246,7 @@
                  min( inClose[i], inOpen[i] ) > min( inClose[i-1], inOpen[i-1] )
                )
                 outInteger[outIdx++] = -TA_CANDLECOLOR(i-1) * 100;
-            else 
+            else
                 if ( max( inClose[i], inOpen[i] ) <= max( inClose[i-1], inOpen[i-1] ) &&         // 2nd is engulfed by 1st
                      min( inClose[i], inOpen[i] ) >= min( inClose[i-1], inOpen[i-1] )            // (one end of real body can match;
                    )                                                                             // engulfing guaranteed by "long" and "short")
@@ -259,13 +255,13 @@
                     outInteger[outIdx++] = 0;
         else
             outInteger[outIdx++] = 0;
-#endif        
-        /* add the current range and subtract the first range: this is done after the pattern recognition 
+
+        /* add the current range and subtract the first range: this is done after the pattern recognition
          * when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
          */
         BodyLongPeriodTotal += TA_CANDLERANGE( BodyLong, i-1 ) - TA_CANDLERANGE( BodyLong, BodyLongTrailingIdx );
         BodyShortPeriodTotal += TA_CANDLERANGE( BodyShort, i ) - TA_CANDLERANGE( BodyShort, BodyShortTrailingIdx );
-        i++; 
+        i++;
         BodyLongTrailingIdx++;
         BodyShortTrailingIdx++;
    } while( i <= endIdx );
@@ -280,7 +276,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -369,13 +364,9 @@
 /* Generated */         i++;
 /* Generated */    }
 /* Generated */    i = startIdx;
-/* Generated */ #ifdef TA_LIB_PRO
-/* Generated */ #endif
 /* Generated */    outIdx = 0;
 /* Generated */    do
 /* Generated */    {
-/* Generated */ #ifdef TA_LIB_PRO
-/* Generated */ #else
 /* Generated */ 	    if( TA_REALBODY(i-1) > TA_CANDLEAVERAGE( BodyLong, BodyLongPeriodTotal, i-1 ) &&         // 1st: long
 /* Generated */             TA_REALBODY(i) <= TA_CANDLEAVERAGE( BodyShort, BodyShortPeriodTotal, i )             // 2nd: short
 /* Generated */           )
@@ -383,7 +374,7 @@
 /* Generated */                  min( inClose[i], inOpen[i] ) > min( inClose[i-1], inOpen[i-1] )
 /* Generated */                )
 /* Generated */                 outInteger[outIdx++] = -TA_CANDLECOLOR(i-1) * 100;
-/* Generated */             else 
+/* Generated */             else
 /* Generated */                 if ( max( inClose[i], inOpen[i] ) <= max( inClose[i-1], inOpen[i-1] ) &&         // 2nd is engulfed by 1st
 /* Generated */                      min( inClose[i], inOpen[i] ) >= min( inClose[i-1], inOpen[i-1] )            // (one end of real body can match;
 /* Generated */                    )                                                                             // engulfing guaranteed by "long" and "short")
@@ -392,10 +383,9 @@
 /* Generated */                     outInteger[outIdx++] = 0;
 /* Generated */         else
 /* Generated */             outInteger[outIdx++] = 0;
-/* Generated */ #endif        
 /* Generated */         BodyLongPeriodTotal += TA_CANDLERANGE( BodyLong, i-1 ) - TA_CANDLERANGE( BodyLong, BodyLongTrailingIdx );
 /* Generated */         BodyShortPeriodTotal += TA_CANDLERANGE( BodyShort, i ) - TA_CANDLERANGE( BodyShort, BodyShortTrailingIdx );
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */         BodyLongTrailingIdx++;
 /* Generated */         BodyShortTrailingIdx++;
 /* Generated */    } while( i <= endIdx );

@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -204,20 +207,20 @@
     *       ROCR100 = (price/prevPrice)*100       [Rate of change ratio 100 Scale]
     *
     * Here are the equivalent function in other software:
-    *       TA-Lib  |   Tradestation   |    Metastock         
+    *       TA-Lib  |   Tradestation   |    Metastock
     *       =================================================
     *       MOM     |   Momentum       |    ROC (Point)
     *       ROC     |   ROC            |    ROC (Percent)
-    *       ROCP    |   PercentChange  |    -     
+    *       ROCP    |   PercentChange  |    -
     *       ROCR    |   -              |    -
     *       ROCR100 |   -              |    MO
     *
     * The MOM function is the only one who is not normalized, and thus
     * should be avoided for comparing different time serie of prices.
-    * 
+    *
     * ROC and ROCP are centered at zero and can have positive and negative
     * value. Here are some equivalence:
-    *    ROC = ROCP/100 
+    *    ROC = ROCP/100
     *        = ((price-prevPrice)/prevPrice)/100
     *        = ((price/prevPrice)-1)*100
     *
@@ -250,8 +253,8 @@
       if( tempReal != 0.0 )
          outReal[outIdx++] = (inReal[inIdx] / tempReal);
       else
-         outReal[outIdx++] = 0.0; 
-         
+         outReal[outIdx++] = 0.0;
+
       inIdx++;
    }
 
@@ -265,7 +268,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -342,7 +344,7 @@
 /* Generated */       if( tempReal != 0.0 )
 /* Generated */          outReal[outIdx++] = (inReal[inIdx] / tempReal);
 /* Generated */       else
-/* Generated */          outReal[outIdx++] = 0.0; 
+/* Generated */          outReal[outIdx++] = 0.0;
 /* Generated */       inIdx++;
 /* Generated */    }
 /* Generated */    VALUE_HANDLE_DEREF(outNBElement) = outIdx;

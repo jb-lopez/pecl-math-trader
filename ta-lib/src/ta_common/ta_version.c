@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -34,14 +34,17 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-/* Version number controlled manually.
+/* Package versioning.
  *
- * Should be modified only by TA-Lib.org
+ * Must match the VERSION file in the TA-Lib repos root dir.
+ *
  */
 #define MAJOR "0"
 #define MINOR "6"
-#define BUILD "0"
-#define EXTRA "dev"
+#define PATCH "4"
+
+/* Deprecated: Use PATCH instead. */
+#define BUILD PATCH
 
 /* Nothing to modify below this line. */
 
@@ -49,11 +52,7 @@
 
 const char  *TA_GetVersionString( void )
 {
-	if (sizeof(EXTRA) > 1) {
-		return MAJOR "." MINOR "." BUILD "-" EXTRA " " TA_VERSION_DT;
-	} else {
-		return MAJOR "." MINOR "." BUILD " " TA_VERSION_DT;
-	}
+	return MAJOR "." MINOR "." PATCH " " TA_VERSION_DT;
 }
 
 const char *TA_GetVersionMajor( void )
@@ -66,14 +65,25 @@ const char *TA_GetVersionMinor( void )
    return MINOR;
 }
 
+const char *TA_GetVersionPatch( void )
+{
+   return PATCH;
+}
+
 const char *TA_GetVersionBuild( void )
 {
-   return BUILD;
+   /* Deprecated: No further support for Build versioning.
+    * Package versioning are now only MAJOR.MINOR.PATCH
+    */
+   return PATCH;
 }
 
 const char *TA_GetVersionExtra( void )
 {
-   return EXTRA;
+   /* Deprecated: No further support for Extra versioning.
+    * Package versioning are now only MAJOR.MINOR.PATCH
+    */
+   return "";
 }
 
 const char *TA_GetVersionDate( void )

@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  100204 AC   Creation           
+ *  100204 AC   Creation
  *
  */
 
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -206,7 +209,7 @@
    BodyDojiPeriodTotal = 0;
    BodyLongTrailingIdx = startIdx -1 - TA_CANDLEAVGPERIOD(BodyLong);
    BodyDojiTrailingIdx = startIdx - TA_CANDLEAVGPERIOD(BodyDoji);
-   
+
    i = BodyLongTrailingIdx;
    while( i < startIdx-1 ) {
         BodyLongPeriodTotal += TA_CANDLERANGE( BodyLong, i );
@@ -218,27 +221,20 @@
         i++;
    }
 
-#ifdef TA_LIB_PRO
-      /* Section for code distributed with TA-Lib Pro only. */
-#endif
-
    /* Proceed with the calculation for the requested range.
     * Must have:
     * - first candle: long real body
     * - second candle: star (open gapping up in an uptrend or down in a downtrend) with a doji
     * The meaning of "doji" and "long" is specified with TA_SetCandleSettings
-    * outInteger is positive (1 to 100) when bullish or negative (-1 to -100) when bearish; 
-    * it's defined bullish when the long candle is white and the star gaps up, bearish when the long candle 
-    * is black and the star gaps down; the user should consider that a doji star is bullish when it appears 
-    * in an uptrend and it's bearish when it appears in a downtrend, so to determine the bullishness or 
+    * outInteger is positive (1 to 100) when bullish or negative (-1 to -100) when bearish;
+    * it's defined bullish when the long candle is white and the star gaps up, bearish when the long candle
+    * is black and the star gaps down; the user should consider that a doji star is bullish when it appears
+    * in an uptrend and it's bearish when it appears in a downtrend, so to determine the bullishness or
     * bearishness of the pattern the trend must be analyzed
     */
    outIdx = 0;
    do
    {
-#ifdef TA_LIB_PRO
-      /* Section for code distributed with TA-Lib Pro only. */
-#else
         if( TA_REALBODY(i-1) > TA_CANDLEAVERAGE( BodyLong, BodyLongPeriodTotal, i-1 ) &&     // 1st: long real body
             TA_REALBODY(i) <= TA_CANDLEAVERAGE( BodyDoji, BodyDojiPeriodTotal, i ) &&        // 2nd: doji
             ( ( TA_CANDLECOLOR(i-1) == 1 && TA_REALBODYGAPUP(i,i-1) )                        //        that gaps up if 1st is white
@@ -248,13 +244,13 @@
             outInteger[outIdx++] = -TA_CANDLECOLOR(i-1) * 100;
         else
             outInteger[outIdx++] = 0;
-#endif
-        /* add the current range and subtract the first range: this is done after the pattern recognition 
+
+        /* add the current range and subtract the first range: this is done after the pattern recognition
          * when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
          */
         BodyLongPeriodTotal += TA_CANDLERANGE( BodyLong, i-1 ) - TA_CANDLERANGE( BodyLong, BodyLongTrailingIdx );
         BodyDojiPeriodTotal += TA_CANDLERANGE( BodyDoji, i ) - TA_CANDLERANGE( BodyDoji, BodyDojiTrailingIdx );
-        i++; 
+        i++;
         BodyLongTrailingIdx++;
         BodyDojiTrailingIdx++;
    } while( i <= endIdx );
@@ -269,7 +265,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -357,13 +352,9 @@
 /* Generated */         BodyDojiPeriodTotal += TA_CANDLERANGE( BodyDoji, i );
 /* Generated */         i++;
 /* Generated */    }
-/* Generated */ #ifdef TA_LIB_PRO
-/* Generated */ #endif
 /* Generated */    outIdx = 0;
 /* Generated */    do
 /* Generated */    {
-/* Generated */ #ifdef TA_LIB_PRO
-/* Generated */ #else
 /* Generated */         if( TA_REALBODY(i-1) > TA_CANDLEAVERAGE( BodyLong, BodyLongPeriodTotal, i-1 ) &&     // 1st: long real body
 /* Generated */             TA_REALBODY(i) <= TA_CANDLEAVERAGE( BodyDoji, BodyDojiPeriodTotal, i ) &&        // 2nd: doji
 /* Generated */             ( ( TA_CANDLECOLOR(i-1) == 1 && TA_REALBODYGAPUP(i,i-1) )                        //        that gaps up if 1st is white
@@ -373,10 +364,9 @@
 /* Generated */             outInteger[outIdx++] = -TA_CANDLECOLOR(i-1) * 100;
 /* Generated */         else
 /* Generated */             outInteger[outIdx++] = 0;
-/* Generated */ #endif
 /* Generated */         BodyLongPeriodTotal += TA_CANDLERANGE( BodyLong, i-1 ) - TA_CANDLERANGE( BodyLong, BodyLongTrailingIdx );
 /* Generated */         BodyDojiPeriodTotal += TA_CANDLERANGE( BodyDoji, i ) - TA_CANDLERANGE( BodyDoji, BodyDojiTrailingIdx );
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */         BodyLongTrailingIdx++;
 /* Generated */         BodyDojiTrailingIdx++;
 /* Generated */    } while( i <= endIdx );

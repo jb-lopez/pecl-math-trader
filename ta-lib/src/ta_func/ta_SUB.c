@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -58,6 +58,9 @@
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
 /* Generated */    #include <math.h>
@@ -100,7 +103,7 @@
 
 /**** START GENCODE SECTION 3 - DO NOT DELETE THIS LINE ****/
 /*
- * TA_SUB - Vector Arithmetic Substraction
+ * TA_SUB - Vector Arithmetic Subtraction
  * 
  * Input  = double, double
  * Output = double
@@ -144,10 +147,7 @@
 {
    /* insert local variable here */
    int outIdx;
-
-#ifndef TA_LIB_PRO
    int i;
-#endif
 
 /**** START GENCODE SECTION 4 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
@@ -175,14 +175,10 @@
    /* Insert TA function code here. */
 
    /* Default return values */
-#ifdef TA_LIB_PRO
-      /* Section for code distributed with TA-Lib Pro only. */
-#else
-      for( i=startIdx, outIdx=0; i <= endIdx; i++, outIdx++ )
-      {
-         outReal[outIdx] = inReal0[i]-inReal1[i];
-      }    
-#endif
+   for( i=startIdx, outIdx=0; i <= endIdx; i++, outIdx++ )
+   {
+      outReal[outIdx] = inReal0[i]-inReal1[i];
+   }
 
    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
    VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;
@@ -193,7 +189,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -235,9 +230,7 @@
 /* Generated */ #endif
 /* Generated */ {
 /* Generated */    int outIdx;
-/* Generated */ #ifndef TA_LIB_PRO
 /* Generated */    int i;
-/* Generated */ #endif
 /* Generated */  #ifndef TA_FUNC_NO_RANGE_CHECK
 /* Generated */     if( startIdx < 0 )
 /* Generated */        return ENUM_VALUE(RetCode,TA_OUT_OF_RANGE_START_INDEX,OutOfRangeStartIndex);
@@ -252,13 +245,10 @@
 /* Generated */        return ENUM_VALUE(RetCode,TA_BAD_PARAM,BadParam);
 /* Generated */     #endif 
 /* Generated */  #endif 
-/* Generated */ #ifdef TA_LIB_PRO
-/* Generated */ #else
-/* Generated */       for( i=startIdx, outIdx=0; i <= endIdx; i++, outIdx++ )
-/* Generated */       {
-/* Generated */          outReal[outIdx] = inReal0[i]-inReal1[i];
-/* Generated */       }    
-/* Generated */ #endif
+/* Generated */    for( i=startIdx, outIdx=0; i <= endIdx; i++, outIdx++ )
+/* Generated */    {
+/* Generated */       outReal[outIdx] = inReal0[i]-inReal1[i];
+/* Generated */    }
 /* Generated */    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
 /* Generated */    VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;
 /* Generated */    return ENUM_VALUE(RetCode,TA_SUCCESS,Success);

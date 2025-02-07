@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -190,7 +193,7 @@
    /* Insert TA function code here. */
 
    /* Simply call the internal implementation of the EMA. */
-   return FUNCTION_CALL(INT_EMA)( startIdx, endIdx, inReal, 
+   return FUNCTION_CALL(INT_EMA)( startIdx, endIdx, inReal,
                                   optInTimePeriod,
                                   PER_TO_K( optInTimePeriod ),
                                   outBegIdx, outNBElement, outReal );
@@ -215,7 +218,7 @@
  */
 #if defined( _MANAGED ) && defined( USE_SUBARRAY )
  enum class Core::RetCode Core::TA_INT_EMA( int            startIdx,
-                                            int           endIdx, 
+                                            int           endIdx,
                                             SubArray<double>^     inReal,
                                             int           optInTimePeriod,
                                             double        optInK_1,
@@ -281,7 +284,7 @@ TA_RetCode TA_PREFIX(INT_EMA)( int               startIdx,
    VALUE_HANDLE_DEREF(outBegIdx) = startIdx;
 
    /* Do the EMA calculation using tight loops. */
-   
+
    /* The first EMA is calculated differently. It
     * then become the seed for subsequent EMA.
     *
@@ -333,9 +336,9 @@ TA_RetCode TA_PREFIX(INT_EMA)( int               startIdx,
     * input.
     */
 
-   /* Skip the unstable period. Do the processing 
+   /* Skip the unstable period. Do the processing
     * but do not write it in the output.
-    */   
+    */
    while( today <= startIdx )
       prevMA = ((inReal[today++]-prevMA)*optInK_1) + prevMA;
 
@@ -359,7 +362,6 @@ TA_RetCode TA_PREFIX(INT_EMA)( int               startIdx,
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -417,7 +419,7 @@ TA_RetCode TA_PREFIX(INT_EMA)( int               startIdx,
 /* Generated */        return ENUM_VALUE(RetCode,TA_BAD_PARAM,BadParam);
 /* Generated */     #endif 
 /* Generated */  #endif 
-/* Generated */    return FUNCTION_CALL(INT_EMA)( startIdx, endIdx, inReal, 
+/* Generated */    return FUNCTION_CALL(INT_EMA)( startIdx, endIdx, inReal,
 /* Generated */                                   optInTimePeriod,
 /* Generated */                                   PER_TO_K( optInTimePeriod ),
 /* Generated */                                   outBegIdx, outNBElement, outReal );
@@ -427,7 +429,7 @@ TA_RetCode TA_PREFIX(INT_EMA)( int               startIdx,
 /* Generated */ #else
 /* Generated */ #if defined( _MANAGED ) && defined( USE_SUBARRAY )
 /* Generated */  enum class Core::RetCode Core::TA_INT_EMA( int            startIdx,
-/* Generated */                                             int           endIdx, 
+/* Generated */                                             int           endIdx,
 /* Generated */                                             SubArray<double>^     inReal,
 /* Generated */                                             int           optInTimePeriod,
 /* Generated */                                             double        optInK_1,

@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -251,7 +254,7 @@
     *
     *     The ADOSC is always the (fastEMA - slowEMA) regardless
     *     of the period specified. In other word:
-    * 
+    *
     *     ADOSC(3,10) = EMA(3,AD) - EMA(10,AD)
     *
     *        while
@@ -266,7 +269,7 @@
     *     experiment with unusual parameter settings.
     */
 
-   /* Identify the slowest period. 
+   /* Identify the slowest period.
     * This infomration is used soleley to bootstrap
     * the algorithm (skip the lookback period).
     */
@@ -319,7 +322,7 @@
     * both EMA and simply seed with the first A/D value.
     *
     * Note: Metastock do the same.
-    */   
+    */
    CALCULATE_AD;
    fastEMA = ad;
    slowEMA = ad;
@@ -330,8 +333,8 @@
       CALCULATE_AD;
       fastEMA = (fastk*ad)+(one_minus_fastk*fastEMA);
       slowEMA = (slowk*ad)+(one_minus_slowk*slowEMA);
-   }     
-      
+   }
+
    /* Perform the calculation for the requested range */
    outIdx = 0;
    while( today <= endIdx )
@@ -350,7 +353,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -473,7 +475,7 @@
 /* Generated */       CALCULATE_AD;
 /* Generated */       fastEMA = (fastk*ad)+(one_minus_fastk*fastEMA);
 /* Generated */       slowEMA = (slowk*ad)+(one_minus_slowk*slowEMA);
-/* Generated */    }     
+/* Generated */    }
 /* Generated */    outIdx = 0;
 /* Generated */    while( today <= endIdx )
 /* Generated */    {

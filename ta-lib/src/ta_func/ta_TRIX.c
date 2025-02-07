@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -211,10 +214,10 @@
    {
       VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
-      return ENUM_VALUE(RetCode,TA_SUCCESS,Success); 
+      return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
    }
 
-   VALUE_HANDLE_DEREF(outBegIdx) = startIdx; 
+   VALUE_HANDLE_DEREF(outBegIdx) = startIdx;
 
    nbElementToOutput = (endIdx-startIdx)+1+totalLookback;
 
@@ -232,13 +235,13 @@
       }
    #endif
 
-   /* Calculate the first EMA */   
-   k = PER_TO_K(optInTimePeriod);  
+   /* Calculate the first EMA */
+   k = PER_TO_K(optInTimePeriod);
    retCode = FUNCTION_CALL(INT_EMA)( (startIdx-totalLookback), endIdx, inReal,
                                      optInTimePeriod, k,
                                      VALUE_HANDLE_OUT(begIdx), VALUE_HANDLE_OUT(nbElement),
 								     tempBuffer );
-   
+
    /* Verify for failure or if not enough data after
     * calculating the EMA.
     */
@@ -252,13 +255,13 @@
 
    nbElementToOutput--; /* Make this variable zero base from now on. */
 
-   /* Calculate the second EMA */   
+   /* Calculate the second EMA */
    nbElementToOutput -= emaLookback;
    retCode = FUNCTION_CALL_DOUBLE(INT_EMA)( 0, nbElementToOutput, tempBuffer,
                                             optInTimePeriod, k,
                                             VALUE_HANDLE_OUT(begIdx), VALUE_HANDLE_OUT(nbElement),
 						                    tempBuffer );
-   
+
    /* Verify for failure or if not enough data after
     * calculating the EMA.
     */
@@ -270,13 +273,13 @@
       return retCode;
    }
 
-   /* Calculate the third EMA */   
+   /* Calculate the third EMA */
    nbElementToOutput -= emaLookback;
    retCode = FUNCTION_CALL_DOUBLE(INT_EMA)( 0, nbElementToOutput, tempBuffer,
                                             optInTimePeriod, k,
                                             VALUE_HANDLE_OUT(begIdx), VALUE_HANDLE_OUT(nbElement),
 						                    tempBuffer );
-   
+
    /* Verify for failure or if not enough data after
     * calculating the EMA.
     */
@@ -312,7 +315,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -387,9 +389,9 @@
 /* Generated */    {
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
 /* Generated */       VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
-/* Generated */       return ENUM_VALUE(RetCode,TA_SUCCESS,Success); 
+/* Generated */       return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
 /* Generated */    }
-/* Generated */    VALUE_HANDLE_DEREF(outBegIdx) = startIdx; 
+/* Generated */    VALUE_HANDLE_DEREF(outBegIdx) = startIdx;
 /* Generated */    nbElementToOutput = (endIdx-startIdx)+1+totalLookback;
 /* Generated */    ARRAY_ALLOC(tempBuffer, nbElementToOutput );
 /* Generated */    #if !defined( _JAVA ) && !defined( USE_SUBARRAY )
@@ -400,7 +402,7 @@
 /* Generated */          return ENUM_VALUE(RetCode,TA_ALLOC_ERR,AllocErr);
 /* Generated */       }
 /* Generated */    #endif
-/* Generated */    k = PER_TO_K(optInTimePeriod);  
+/* Generated */    k = PER_TO_K(optInTimePeriod);
 /* Generated */    retCode = FUNCTION_CALL(INT_EMA)( (startIdx-totalLookback), endIdx, inReal,
 /* Generated */                                      optInTimePeriod, k,
 /* Generated */                                      VALUE_HANDLE_OUT(begIdx), VALUE_HANDLE_OUT(nbElement),

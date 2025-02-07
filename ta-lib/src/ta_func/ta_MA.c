@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -64,6 +64,9 @@
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
 /* Generated */    #include <math.h>
@@ -118,7 +121,7 @@
 
    if( optInTimePeriod <= 1 )
       return 0;
-   
+
    switch( optInMAType )
    {
    case ENUM_CASE(MAType, TA_MAType_SMA, Sma ):
@@ -266,7 +269,7 @@
    if( optInTimePeriod == 1 )
    {
       nbElement = endIdx-startIdx+1;
-      VALUE_HANDLE_DEREF(outNBElement) = nbElement;      
+      VALUE_HANDLE_DEREF(outNBElement) = nbElement;
       for( todayIdx=startIdx, outIdx=0; outIdx < nbElement; outIdx++, todayIdx++ )
          outReal[outIdx] = inReal[todayIdx];
       VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;
@@ -281,7 +284,7 @@
       break;
 
    case ENUM_CASE(MAType, TA_MAType_EMA, Ema):
-      retCode = FUNCTION_CALL(EMA)( startIdx, endIdx, inReal, optInTimePeriod,                                     
+      retCode = FUNCTION_CALL(EMA)( startIdx, endIdx, inReal, optInTimePeriod,
                                     outBegIdx, outNBElement, outReal );
       break;
 
@@ -321,10 +324,10 @@
             return ENUM_VALUE(RetCode,TA_ALLOC_ERR,AllocErr);
       #endif
 
-      retCode = FUNCTION_CALL(MAMA)( startIdx, endIdx, inReal, 0.5, 0.05,                           
+      retCode = FUNCTION_CALL(MAMA)( startIdx, endIdx, inReal, 0.5, 0.05,
                                      outBegIdx, outNBElement,
                                      outReal, dummyBuffer );
-                         
+
       ARRAY_FREE( dummyBuffer );
       break;
 
@@ -334,7 +337,7 @@
                                    outBegIdx, outNBElement, outReal );
       break;
 
-   default: 
+   default:
       retCode = ENUM_VALUE(RetCode,TA_BAD_PARAM,BadParam);
       break;
    }
@@ -345,7 +348,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -420,7 +422,7 @@
 /* Generated */    if( optInTimePeriod == 1 )
 /* Generated */    {
 /* Generated */       nbElement = endIdx-startIdx+1;
-/* Generated */       VALUE_HANDLE_DEREF(outNBElement) = nbElement;      
+/* Generated */       VALUE_HANDLE_DEREF(outNBElement) = nbElement;
 /* Generated */       for( todayIdx=startIdx, outIdx=0; outIdx < nbElement; outIdx++, todayIdx++ )
 /* Generated */          outReal[outIdx] = inReal[todayIdx];
 /* Generated */       VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;
@@ -433,7 +435,7 @@
 /* Generated */                                     outBegIdx, outNBElement, outReal );
 /* Generated */       break;
 /* Generated */    case ENUM_CASE(MAType, TA_MAType_EMA, Ema):
-/* Generated */       retCode = FUNCTION_CALL(EMA)( startIdx, endIdx, inReal, optInTimePeriod,                                     
+/* Generated */       retCode = FUNCTION_CALL(EMA)( startIdx, endIdx, inReal, optInTimePeriod,
 /* Generated */                                     outBegIdx, outNBElement, outReal );
 /* Generated */       break;
 /* Generated */    case ENUM_CASE(MAType, TA_MAType_WMA, Wma):
@@ -462,7 +464,7 @@
 /* Generated */          if( !dummyBuffer )
 /* Generated */             return ENUM_VALUE(RetCode,TA_ALLOC_ERR,AllocErr);
 /* Generated */       #endif
-/* Generated */       retCode = FUNCTION_CALL(MAMA)( startIdx, endIdx, inReal, 0.5, 0.05,                           
+/* Generated */       retCode = FUNCTION_CALL(MAMA)( startIdx, endIdx, inReal, 0.5, 0.05,
 /* Generated */                                      outBegIdx, outNBElement,
 /* Generated */                                      outReal, dummyBuffer );
 /* Generated */       ARRAY_FREE( dummyBuffer );
@@ -472,7 +474,7 @@
 /* Generated */                                    optInTimePeriod, 0.7,
 /* Generated */                                    outBegIdx, outNBElement, outReal );
 /* Generated */       break;
-/* Generated */    default: 
+/* Generated */    default:
 /* Generated */       retCode = ENUM_VALUE(RetCode,TA_BAD_PARAM,BadParam);
 /* Generated */       break;
 /* Generated */    }

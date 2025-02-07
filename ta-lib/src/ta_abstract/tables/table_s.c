@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -338,7 +338,7 @@ DEF_MATH_UNARY_OPERATOR( SQRT, "Vector Square Root", "Sqrt" )
 /* SQRT END */
 
 /* SUB BEGIN */
-DEF_MATH_BINARY_OPERATOR( SUB, "Vector Arithmetic Substraction", "Sub" )
+DEF_MATH_BINARY_OPERATOR( SUB, "Vector Arithmetic Subtraction", "Sub" )
 /* SUB END */
 
 /* SUM BEGIN */

@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -61,6 +61,9 @@
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
 /* Generated */    #include <math.h>
@@ -98,7 +101,7 @@
 
    /* insert lookback code here. */
 
-   /*  31 input are skip 
+   /*  31 input are skip
     * +32 output are skip to account for misc lookback
     * ---
     *  63 Total Lookback
@@ -288,10 +291,10 @@
    } while( --i != 0);
 
    /* Initialize the circular buffers used by the hilbert
-    * transform logic. 
+    * transform logic.
     * A buffer is used for odd day and another for even days.
     * This minimize the number of memory access and floating point
-    * operations needed (note also that by using static circular buffer, 
+    * operations needed (note also that by using static circular buffer,
     * no large dynamic memory allocation is needed for storing
     * intermediate calculation!).
     */
@@ -317,7 +320,7 @@
    /* The code is speed optimized and is most likely very
     * hard to follow if you do not already know well the
     * original algorithm.
-    * To understadn better, it is strongly suggested to look 
+    * To understadn better, it is strongly suggested to look
     * first at the Excel implementation in "test_MAMA.xls" included
     * in this package.
     */
@@ -348,13 +351,13 @@
          I2 = (0.2*(I1ForEvenPrev3 - jQ)) + (0.8*prevI2);
 
          /* The variable I1 is the detrender delayed for
-          * 3 price bars. 
+          * 3 price bars.
           *
           * Save the current detrender value for being
           * used by the "odd" logic later.
           */
          I1ForOddPrev3 = I1ForOddPrev2;
-         I1ForOddPrev2 = detrender;      
+         I1ForOddPrev2 = detrender;
       }
       else
       {
@@ -368,7 +371,7 @@
          I2 = (0.2*(I1ForOddPrev3 - jQ)) + (0.8*prevI2);
 
          /* The varaiable I1 is the detrender delayed for
-          * 3 price bars. 
+          * 3 price bars.
           *
           * Save the current detrender value for being
           * used by the "even" logic later.
@@ -451,14 +454,13 @@
    }
 
    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
- 
+
    return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
 }
 
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -605,7 +607,7 @@
 /* Generated */          Q2 = (0.2*(Q1 + jI)) + (0.8*prevQ2);
 /* Generated */          I2 = (0.2*(I1ForEvenPrev3 - jQ)) + (0.8*prevI2);
 /* Generated */          I1ForOddPrev3 = I1ForOddPrev2;
-/* Generated */          I1ForOddPrev2 = detrender;      
+/* Generated */          I1ForOddPrev2 = detrender;
 /* Generated */       }
 /* Generated */       else
 /* Generated */       {

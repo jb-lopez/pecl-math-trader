@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  032005 AC   Creation           
+ *  032005 AC   Creation
  *
  */
 
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -78,10 +81,10 @@
 /* Generated */ #define INPUT_TYPE   double
 /* Generated */ 
 /* Generated */ #if defined( _MANAGED )
-/* Generated */ int Core::CdlStickSandwhichLookback( void )
+/* Generated */ int Core::CdlStickSandwichLookback( void )
 /* Generated */ 
 /* Generated */ #elif defined( _JAVA )
-/* Generated */ public int cdlStickSandwhichLookback(  )
+/* Generated */ public int cdlStickSandwichLookback(  )
 /* Generated */ 
 /* Generated */ #else
 /* Generated */ TA_LIB_API int TA_CDLSTICKSANDWICH_Lookback( void )
@@ -109,35 +112,35 @@
  */
 /* Generated */ 
 /* Generated */ #if defined( _MANAGED ) && defined( USE_SUBARRAY )
-/* Generated */ enum class Core::RetCode Core::CdlStickSandwhich( int    startIdx,
-/* Generated */                                                   int    endIdx,
-/* Generated */                                                   SubArray<double>^ inOpen,
-/* Generated */                                                   SubArray<double>^ inHigh,
-/* Generated */                                                   SubArray<double>^ inLow,
-/* Generated */                                                   SubArray<double>^ inClose,
-/* Generated */                                                   [Out]int%    outBegIdx,
-/* Generated */                                                   [Out]int%    outNBElement,
-/* Generated */                                                   SubArray<int>^  outInteger )
+/* Generated */ enum class Core::RetCode Core::CdlStickSandwich( int    startIdx,
+/* Generated */                                                  int    endIdx,
+/* Generated */                                                  SubArray<double>^ inOpen,
+/* Generated */                                                  SubArray<double>^ inHigh,
+/* Generated */                                                  SubArray<double>^ inLow,
+/* Generated */                                                  SubArray<double>^ inClose,
+/* Generated */                                                  [Out]int%    outBegIdx,
+/* Generated */                                                  [Out]int%    outNBElement,
+/* Generated */                                                  SubArray<int>^  outInteger )
 /* Generated */ #elif defined( _MANAGED )
-/* Generated */ enum class Core::RetCode Core::CdlStickSandwhich( int    startIdx,
-/* Generated */                                                   int    endIdx,
-/* Generated */                                                   cli::array<double>^ inOpen,
-/* Generated */                                                   cli::array<double>^ inHigh,
-/* Generated */                                                   cli::array<double>^ inLow,
-/* Generated */                                                   cli::array<double>^ inClose,
-/* Generated */                                                   [Out]int%    outBegIdx,
-/* Generated */                                                   [Out]int%    outNBElement,
-/* Generated */                                                   cli::array<int>^  outInteger )
+/* Generated */ enum class Core::RetCode Core::CdlStickSandwich( int    startIdx,
+/* Generated */                                                  int    endIdx,
+/* Generated */                                                  cli::array<double>^ inOpen,
+/* Generated */                                                  cli::array<double>^ inHigh,
+/* Generated */                                                  cli::array<double>^ inLow,
+/* Generated */                                                  cli::array<double>^ inClose,
+/* Generated */                                                  [Out]int%    outBegIdx,
+/* Generated */                                                  [Out]int%    outNBElement,
+/* Generated */                                                  cli::array<int>^  outInteger )
 /* Generated */ #elif defined( _JAVA )
-/* Generated */ public RetCode cdlStickSandwhich( int    startIdx,
-/* Generated */                                   int    endIdx,
-/* Generated */                                   double       inOpen[],
-/* Generated */                                   double       inHigh[],
-/* Generated */                                   double       inLow[],
-/* Generated */                                   double       inClose[],
-/* Generated */                                   MInteger     outBegIdx,
-/* Generated */                                   MInteger     outNBElement,
-/* Generated */                                   int           outInteger[] )
+/* Generated */ public RetCode cdlStickSandwich( int    startIdx,
+/* Generated */                                  int    endIdx,
+/* Generated */                                  double       inOpen[],
+/* Generated */                                  double       inHigh[],
+/* Generated */                                  double       inLow[],
+/* Generated */                                  double       inClose[],
+/* Generated */                                  MInteger     outBegIdx,
+/* Generated */                                  MInteger     outNBElement,
+/* Generated */                                  int           outInteger[] )
 /* Generated */ #else
 /* Generated */ TA_LIB_API TA_RetCode TA_CDLSTICKSANDWICH( int    startIdx,
 /* Generated */                                            int    endIdx,
@@ -219,7 +222,7 @@
     * - third candle: black candle with the close equal to the first candle's close
     * The meaning of "equal" is specified with TA_SetCandleSettings
     * outInteger is always positive (1 to 100): stick sandwich is always bullish;
-    * the user should consider that stick sandwich is significant when coming in a downtrend, 
+    * the user should consider that stick sandwich is significant when coming in a downtrend,
     * while this function does not consider it
     */
    outIdx = 0;
@@ -235,7 +238,7 @@
             outInteger[outIdx++] = 100;
         else
             outInteger[outIdx++] = 0;
-        /* add the current range and subtract the first range: this is done after the pattern recognition 
+        /* add the current range and subtract the first range: this is done after the pattern recognition
          * when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
          */
         EqualPeriodTotal += TA_CANDLERANGE( Equal, i-2 ) - TA_CANDLERANGE( Equal, EqualTrailingIdx-2 );
@@ -253,7 +256,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -261,35 +263,35 @@
 /* Generated */ #undef   INPUT_TYPE
 /* Generated */ #define  INPUT_TYPE float
 /* Generated */ #if defined( _MANAGED ) && defined( USE_SUBARRAY )
-/* Generated */ enum class Core::RetCode Core::CdlStickSandwhich( int    startIdx,
-/* Generated */                                                   int    endIdx,
-/* Generated */                                                   SubArray<float>^ inOpen,
-/* Generated */                                                   SubArray<float>^ inHigh,
-/* Generated */                                                   SubArray<float>^ inLow,
-/* Generated */                                                   SubArray<float>^ inClose,
-/* Generated */                                                   [Out]int%    outBegIdx,
-/* Generated */                                                   [Out]int%    outNBElement,
-/* Generated */                                                   SubArray<int>^  outInteger )
+/* Generated */ enum class Core::RetCode Core::CdlStickSandwich( int    startIdx,
+/* Generated */                                                  int    endIdx,
+/* Generated */                                                  SubArray<float>^ inOpen,
+/* Generated */                                                  SubArray<float>^ inHigh,
+/* Generated */                                                  SubArray<float>^ inLow,
+/* Generated */                                                  SubArray<float>^ inClose,
+/* Generated */                                                  [Out]int%    outBegIdx,
+/* Generated */                                                  [Out]int%    outNBElement,
+/* Generated */                                                  SubArray<int>^  outInteger )
 /* Generated */ #elif defined( _MANAGED )
-/* Generated */ enum class Core::RetCode Core::CdlStickSandwhich( int    startIdx,
-/* Generated */                                                   int    endIdx,
-/* Generated */                                                   cli::array<float>^ inOpen,
-/* Generated */                                                   cli::array<float>^ inHigh,
-/* Generated */                                                   cli::array<float>^ inLow,
-/* Generated */                                                   cli::array<float>^ inClose,
-/* Generated */                                                   [Out]int%    outBegIdx,
-/* Generated */                                                   [Out]int%    outNBElement,
-/* Generated */                                                   cli::array<int>^  outInteger )
+/* Generated */ enum class Core::RetCode Core::CdlStickSandwich( int    startIdx,
+/* Generated */                                                  int    endIdx,
+/* Generated */                                                  cli::array<float>^ inOpen,
+/* Generated */                                                  cli::array<float>^ inHigh,
+/* Generated */                                                  cli::array<float>^ inLow,
+/* Generated */                                                  cli::array<float>^ inClose,
+/* Generated */                                                  [Out]int%    outBegIdx,
+/* Generated */                                                  [Out]int%    outNBElement,
+/* Generated */                                                  cli::array<int>^  outInteger )
 /* Generated */ #elif defined( _JAVA )
-/* Generated */ public RetCode cdlStickSandwhich( int    startIdx,
-/* Generated */                                   int    endIdx,
-/* Generated */                                   float        inOpen[],
-/* Generated */                                   float        inHigh[],
-/* Generated */                                   float        inLow[],
-/* Generated */                                   float        inClose[],
-/* Generated */                                   MInteger     outBegIdx,
-/* Generated */                                   MInteger     outNBElement,
-/* Generated */                                   int           outInteger[] )
+/* Generated */ public RetCode cdlStickSandwich( int    startIdx,
+/* Generated */                                  int    endIdx,
+/* Generated */                                  float        inOpen[],
+/* Generated */                                  float        inHigh[],
+/* Generated */                                  float        inLow[],
+/* Generated */                                  float        inClose[],
+/* Generated */                                  MInteger     outBegIdx,
+/* Generated */                                  MInteger     outNBElement,
+/* Generated */                                  int           outInteger[] )
 /* Generated */ #else
 /* Generated */ TA_RetCode TA_S_CDLSTICKSANDWICH( int    startIdx,
 /* Generated */                                   int    endIdx,
@@ -361,4 +363,3 @@
 /* Generated */ }}} // Close namespace TicTacTec.TA.Lib
 /* Generated */ #endif
 /**** END GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
-

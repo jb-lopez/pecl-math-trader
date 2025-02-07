@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -190,7 +193,7 @@
    /* Note: Results from this function might vary slightly
     *       from Metastock outputs. The reason being that
     *       Metastock use float instead of double and this
-    *       cause a different floating-point precision to 
+    *       cause a different floating-point precision to
     *       be used.
     *
     *       For most function, this is not an apparent difference
@@ -198,7 +201,7 @@
     *       this AD function), minor imprecision adds up and becomes
     *       significative.
     *
-    *       For better precision, TA-Lib use double in all its 
+    *       For better precision, TA-Lib use double in all its
     *       its calculations.
     */
 
@@ -219,7 +222,7 @@
 
       if( tmp > 0.0 )
          ad += (((close-low)-(high-close))/tmp)*((double)inVolume[currentBar]);
-      
+
       outReal[outIdx++] = ad;
 
       currentBar++;
@@ -232,7 +235,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x

@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -61,6 +61,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -230,7 +233,7 @@
       sumY2 += y*y;
    }
 
-   /* Write the first output. 
+   /* Write the first output.
     * Save first the trailing values since the input
     * and output might be the same array,
     */
@@ -239,7 +242,7 @@
    tempReal = (sumX2-((sumX*sumX)/optInTimePeriod)) * (sumY2-((sumY*sumY)/optInTimePeriod));
    if( !TA_IS_ZERO_OR_NEG(tempReal) )
       outReal[0] = (sumXY-((sumX*sumY)/optInTimePeriod)) / std_sqrt(tempReal);
-   else 
+   else
       outReal[0] = 0.0;
 
    /* Tight loop to do subsequent values. */
@@ -275,7 +278,7 @@
          outReal[outIdx++] = (sumXY-((sumX*sumY)/optInTimePeriod)) / std_sqrt(tempReal);
       else
          outReal[outIdx++] = 0.0;
-   }  
+   }
 
    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
 
@@ -285,7 +288,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -378,7 +380,7 @@
 /* Generated */    tempReal = (sumX2-((sumX*sumX)/optInTimePeriod)) * (sumY2-((sumY*sumY)/optInTimePeriod));
 /* Generated */    if( !TA_IS_ZERO_OR_NEG(tempReal) )
 /* Generated */       outReal[0] = (sumXY-((sumX*sumY)/optInTimePeriod)) / std_sqrt(tempReal);
-/* Generated */    else 
+/* Generated */    else
 /* Generated */       outReal[0] = 0.0;
 /* Generated */    outIdx = 1;
 /* Generated */    while( today <= endIdx )
@@ -402,7 +404,7 @@
 /* Generated */          outReal[outIdx++] = (sumXY-((sumX*sumY)/optInTimePeriod)) / std_sqrt(tempReal);
 /* Generated */       else
 /* Generated */          outReal[outIdx++] = 0.0;
-/* Generated */    }  
+/* Generated */    }
 /* Generated */    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
 /* Generated */    return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
 /* Generated */ }

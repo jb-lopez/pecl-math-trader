@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -215,11 +218,11 @@
 /* Generated */ 
 /**** END GENCODE SECTION 4 - DO NOT DELETE THIS LINE ****/
 
-   /* Average True Range is the greatest of the following: 
+   /* Average True Range is the greatest of the following:
     *
     *  val1 = distance from today's high to today's low.
     *  val2 = distance from yesterday's close to today's high.
-    *  val3 = distance from yesterday's close to today's low.   
+    *  val3 = distance from yesterday's close to today's low.
     *
     * These value are averaged for the specified period using
     * Wilder method. This method have an unstable period comparable
@@ -274,14 +277,14 @@
    if( retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) )
    {
       ARRAY_FREE( tempBuffer );
-      return retCode;    
+      return retCode;
    }
    prevATR = prevATRTemp[0];
 
    /* Subsequent value are smoothed using the
     * previous ATR value (Wilder's approach).
-    *  1) Multiply the previous ATR by 'period-1'. 
-    *  2) Add today TR value. 
+    *  1) Multiply the previous ATR by 'period-1'.
+    *  2) Add today TR value.
     *  3) Divide by 'period'.
     */
    today = optInTimePeriod;
@@ -295,7 +298,7 @@
       outIdx--;
    }
 
-   /* Now start to write the final ATR in the caller 
+   /* Now start to write the final ATR in the caller
     * provided outReal.
     */
    outIdx = 1;
@@ -314,16 +317,15 @@
 
    VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;
    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
-   
+
    ARRAY_FREE( tempBuffer );
-    
+
    return retCode;
 }
 
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -429,7 +431,7 @@
 /* Generated */    if( retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) )
 /* Generated */    {
 /* Generated */       ARRAY_FREE( tempBuffer );
-/* Generated */       return retCode;    
+/* Generated */       return retCode;
 /* Generated */    }
 /* Generated */    prevATR = prevATRTemp[0];
 /* Generated */    today = optInTimePeriod;

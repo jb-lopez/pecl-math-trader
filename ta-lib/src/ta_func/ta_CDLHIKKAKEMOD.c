@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  122605 AC   Creation           
+ *  122605 AC   Creation
  *
  */
 
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -154,7 +157,7 @@
    /* Insert local variables here. */
     double NearPeriodTotal;
     int i, outIdx, NearTrailingIdx, lookbackTotal, patternIdx, patternResult;
-    
+
 /**** START GENCODE SECTION 4 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #ifndef TA_FUNC_NO_RANGE_CHECK
@@ -219,7 +222,7 @@
         if( inHigh[i-2] < inHigh[i-3] && inLow[i-2] > inLow[i-3] &&             // 2nd: lower high and higher low than 1st
             inHigh[i-1] < inHigh[i-2] && inLow[i-1] > inLow[i-2] &&             // 3rd: lower high and higher low than 2nd
             ( ( inHigh[i] < inHigh[i-1] && inLow[i] < inLow[i-1] &&             // (bull) 4th: lower high and lower low
-                inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )  
+                inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )
                                                                                 // (bull) 2nd: close near the low
               )
               ||
@@ -238,11 +241,11 @@
                   ||
                   ( patternResult < 0 && inClose[i] < inLow[patternIdx-1] )     // close lower than the low of 3rd
                 )
-            ) 
+            )
                 patternIdx = 0;
         NearPeriodTotal += TA_CANDLERANGE( Near, i-2 ) - TA_CANDLERANGE( Near, NearTrailingIdx-2 );
         NearTrailingIdx++;
-        i++; 
+        i++;
    }
 
    i = startIdx;
@@ -259,8 +262,8 @@
     * outInteger[confirmationbar] is equal to 100 + the bullish hikkake result or -100 - the bearish hikkake result
     * Note: if confirmation and a new hikkake come at the same bar, only the new hikkake is reported (the new hikkake
     * overwrites the confirmation of the old hikkake);
-    * the user should consider that modified hikkake is a reversal pattern, while hikkake could be both a reversal 
-    * or a continuation pattern, so bullish (bearish) modified hikkake is significant when appearing in a downtrend 
+    * the user should consider that modified hikkake is a reversal pattern, while hikkake could be both a reversal
+    * or a continuation pattern, so bullish (bearish) modified hikkake is significant when appearing in a downtrend
     * (uptrend)
     */
    outIdx = 0;
@@ -269,7 +272,7 @@
         if( inHigh[i-2] < inHigh[i-3] && inLow[i-2] > inLow[i-3] &&             // 2nd: lower high and higher low than 1st
             inHigh[i-1] < inHigh[i-2] && inLow[i-1] > inLow[i-2] &&             // 3rd: lower high and higher low than 2nd
             ( ( inHigh[i] < inHigh[i-1] && inLow[i] < inLow[i-1] &&             // (bull) 4th: lower high and lower low
-                inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )  
+                inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )
                                                                                 // (bull) 2nd: close near the low
               )
               ||
@@ -296,7 +299,7 @@
                 outInteger[outIdx++] = 0;
         NearPeriodTotal += TA_CANDLERANGE( Near, i-2 ) - TA_CANDLERANGE( Near, NearTrailingIdx-2 );
         NearTrailingIdx++;
-        i++; 
+        i++;
    } while( i <= endIdx );
 
    /* All done. Indicate the output limits and return. */
@@ -309,7 +312,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -397,7 +399,7 @@
 /* Generated */         if( inHigh[i-2] < inHigh[i-3] && inLow[i-2] > inLow[i-3] &&             // 2nd: lower high and higher low than 1st
 /* Generated */             inHigh[i-1] < inHigh[i-2] && inLow[i-1] > inLow[i-2] &&             // 3rd: lower high and higher low than 2nd
 /* Generated */             ( ( inHigh[i] < inHigh[i-1] && inLow[i] < inLow[i-1] &&             // (bull) 4th: lower high and lower low
-/* Generated */                 inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )  
+/* Generated */                 inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )
 /* Generated */                                                                                 // (bull) 2nd: close near the low
 /* Generated */               )
 /* Generated */               ||
@@ -415,11 +417,11 @@
 /* Generated */                   ||
 /* Generated */                   ( patternResult < 0 && inClose[i] < inLow[patternIdx-1] )     // close lower than the low of 3rd
 /* Generated */                 )
-/* Generated */             ) 
+/* Generated */             )
 /* Generated */                 patternIdx = 0;
 /* Generated */         NearPeriodTotal += TA_CANDLERANGE( Near, i-2 ) - TA_CANDLERANGE( Near, NearTrailingIdx-2 );
 /* Generated */         NearTrailingIdx++;
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */    }
 /* Generated */    i = startIdx;
 /* Generated */    outIdx = 0;
@@ -428,7 +430,7 @@
 /* Generated */         if( inHigh[i-2] < inHigh[i-3] && inLow[i-2] > inLow[i-3] &&             // 2nd: lower high and higher low than 1st
 /* Generated */             inHigh[i-1] < inHigh[i-2] && inLow[i-1] > inLow[i-2] &&             // 3rd: lower high and higher low than 2nd
 /* Generated */             ( ( inHigh[i] < inHigh[i-1] && inLow[i] < inLow[i-1] &&             // (bull) 4th: lower high and lower low
-/* Generated */                 inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )  
+/* Generated */                 inClose[i-2] <= inLow[i-2] + TA_CANDLEAVERAGE( Near, NearPeriodTotal, i-2 )
 /* Generated */                                                                                 // (bull) 2nd: close near the low
 /* Generated */               )
 /* Generated */               ||
@@ -454,7 +456,7 @@
 /* Generated */                 outInteger[outIdx++] = 0;
 /* Generated */         NearPeriodTotal += TA_CANDLERANGE( Near, i-2 ) - TA_CANDLERANGE( Near, NearTrailingIdx-2 );
 /* Generated */         NearTrailingIdx++;
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */    } while( i <= endIdx );
 /* Generated */    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
 /* Generated */    VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;

@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -171,7 +174,7 @@
 
    #if defined( USE_SINGLE_PRECISION_INPUT )
       ARRAY_MEMMOVEMIX_VAR;
-   #endif		
+   #endif
 
 /**** START GENCODE SECTION 4 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
@@ -204,19 +207,19 @@
    /* Insert TA function code here. */
 
    /* CMO calculation is mostly identical to RSI.
-    * 
+    *
     * The only difference is in the last step of calculation:
     *
     *   RSI = gain / (gain+loss)
     *   CMO = (gain-loss) / (gain+loss)
-    * 
-    * See the RSI function for potentially some more info 
+    *
+    * See the RSI function for potentially some more info
     * on this algo.
     */
 
    VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
    VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
-   
+
    /* Adjust startIdx to account for the lookback period. */
    lookbackTotal = LOOKBACK_CALL(CMO)( optInTimePeriod );
 
@@ -246,7 +249,7 @@
       return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
    }
 
-   /* Accumulate Wilder's "Average Gain" and "Average Loss" 
+   /* Accumulate Wilder's "Average Gain" and "Average Loss"
     * among the initial period.
     */
    today = startIdx-lookbackTotal;
@@ -262,10 +265,10 @@
     * no need to calculate since this
     * first value will be surely skip.
     */
-   if( (unstablePeriod == 0) && 
+   if( (unstablePeriod == 0) &&
        (TA_GLOBALS_COMPATIBILITY == ENUM_VALUE(Compatibility,TA_COMPATIBILITY_METASTOCK,Metastock)))
    {
-      /* Preserve prevValue because it may get 
+      /* Preserve prevValue because it may get
        * overwritten by the output.
        *(because output ptr could be the same as input ptr).
        */
@@ -294,7 +297,7 @@
       tempValue1 = prevLoss/optInTimePeriod;
       tempValue2 = prevGain/optInTimePeriod;
       tempValue3 = tempValue2-tempValue1;
-      tempValue4 = tempValue1+tempValue2;      
+      tempValue4 = tempValue1+tempValue2;
 
       /* Write the output. */
       if( !TA_IS_ZERO(tempValue4) )
@@ -333,10 +336,10 @@
          prevGain += tempValue2;
    }
 
-   
+
    /* Subsequent prevLoss and prevGain are smoothed
     * using the previous values (Wilder's approach).
-    *  1) Multiply the previous by 'period-1'. 
+    *  1) Multiply the previous by 'period-1'.
     *  2) Add today value.
     *  3) Divide by 'period'.
     */
@@ -361,9 +364,9 @@
    }
    else
    {
-      /* Skip the unstable period. Do the processing 
+      /* Skip the unstable period. Do the processing
        * but do not write it in the output.
-       */   
+       */
       while( today < startIdx )
       {
          tempValue1 = inReal[today];
@@ -418,7 +421,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -465,7 +467,7 @@
 /* Generated */    double tempValue1, tempValue2, tempValue3, tempValue4;
 /* Generated */    #if defined( USE_SINGLE_PRECISION_INPUT )
 /* Generated */       ARRAY_MEMMOVEMIX_VAR;
-/* Generated */    #endif		
+/* Generated */    #endif
 /* Generated */  #ifndef TA_FUNC_NO_RANGE_CHECK
 /* Generated */     if( startIdx < 0 )
 /* Generated */        return ENUM_VALUE(RetCode,TA_OUT_OF_RANGE_START_INDEX,OutOfRangeStartIndex);
@@ -506,7 +508,7 @@
 /* Generated */    today = startIdx-lookbackTotal;
 /* Generated */    prevValue = inReal[today];
 /* Generated */    unstablePeriod = TA_GLOBALS_UNSTABLE_PERIOD(TA_FUNC_UNST_CMO,Cmo);
-/* Generated */    if( (unstablePeriod == 0) && 
+/* Generated */    if( (unstablePeriod == 0) &&
 /* Generated */        (TA_GLOBALS_COMPATIBILITY == ENUM_VALUE(Compatibility,TA_COMPATIBILITY_METASTOCK,Metastock)))
 /* Generated */    {
 /* Generated */       savePrevValue = prevValue;
@@ -525,7 +527,7 @@
 /* Generated */       tempValue1 = prevLoss/optInTimePeriod;
 /* Generated */       tempValue2 = prevGain/optInTimePeriod;
 /* Generated */       tempValue3 = tempValue2-tempValue1;
-/* Generated */       tempValue4 = tempValue1+tempValue2;      
+/* Generated */       tempValue4 = tempValue1+tempValue2;
 /* Generated */       if( !TA_IS_ZERO(tempValue4) )
 /* Generated */          outReal[outIdx++] = 100*(tempValue3/tempValue4);
 /* Generated */       else

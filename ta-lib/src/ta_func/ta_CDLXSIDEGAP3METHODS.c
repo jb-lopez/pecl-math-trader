@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  011605 AC   Creation           
+ *  011605 AC   Creation
  *
  */
 
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -210,7 +213,7 @@
     * - upside (downside) gap between the first and the second real bodies
     * - third candle: black (white) candle that opens within the second real body and closes within the first real body
     * outInteger is positive (1 to 100) when bullish or negative (-1 to -100) when bearish;
-    * the user should consider that up/downside gap 3 methods is significant when it appears in a trend, while this 
+    * the user should consider that up/downside gap 3 methods is significant when it appears in a trend, while this
     * function does not consider it
     */
    outIdx = 0;
@@ -222,7 +225,7 @@
             inOpen[i] > min(inClose[i-1], inOpen[i-1]) &&
             inClose[i] < max(inClose[i-2], inOpen[i-2]) &&                  // 3rd closes within 1st rb
             inClose[i] > min(inClose[i-2], inOpen[i-2]) &&
-            ( ( 
+            ( (
                 TA_CANDLECOLOR(i-2) == 1 &&                                 // when 1st is white
                 TA_REALBODYGAPUP(i-1,i-2)                                   // upside gap
               ) ||
@@ -235,10 +238,10 @@
             outInteger[outIdx++] = TA_CANDLECOLOR(i-2) * 100;
         else
             outInteger[outIdx++] = 0;
-        /* add the current range and subtract the first range: this is done after the pattern recognition 
+        /* add the current range and subtract the first range: this is done after the pattern recognition
          * when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
          */
-        i++; 
+        i++;
    } while( i <= endIdx );
 
    /* All done. Indicate the output limits and return. */
@@ -251,7 +254,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -334,7 +336,7 @@
 /* Generated */             inOpen[i] > min(inClose[i-1], inOpen[i-1]) &&
 /* Generated */             inClose[i] < max(inClose[i-2], inOpen[i-2]) &&                  // 3rd closes within 1st rb
 /* Generated */             inClose[i] > min(inClose[i-2], inOpen[i-2]) &&
-/* Generated */             ( ( 
+/* Generated */             ( (
 /* Generated */                 TA_CANDLECOLOR(i-2) == 1 &&                                 // when 1st is white
 /* Generated */                 TA_REALBODYGAPUP(i-1,i-2)                                   // upside gap
 /* Generated */               ) ||
@@ -347,7 +349,7 @@
 /* Generated */             outInteger[outIdx++] = TA_CANDLECOLOR(i-2) * 100;
 /* Generated */         else
 /* Generated */             outInteger[outIdx++] = 0;
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */    } while( i <= endIdx );
 /* Generated */    VALUE_HANDLE_DEREF(outNBElement) = outIdx;
 /* Generated */    VALUE_HANDLE_DEREF(outBegIdx)    = startIdx;

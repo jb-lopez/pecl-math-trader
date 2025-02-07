@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -62,6 +62,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -229,11 +232,11 @@
 
    /* Insert TA function code here. */
 
-   CIRCBUF_INIT_CLASS( mflow, MoneyFlow, optInTimePeriod );   
+   CIRCBUF_INIT_CLASS( mflow, MoneyFlow, optInTimePeriod );
 
    VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
    VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
-   
+
    /* Adjust startIdx to account for the lookback period. */
    lookbackTotal = optInTimePeriod + TA_GLOBALS_UNSTABLE_PERIOD(TA_FUNC_UNST_MFI,Mfi);
 
@@ -284,7 +287,7 @@
 
       CIRCBUF_NEXT(mflow);
    }
-   
+
    /* The following two equations are equivalent:
     *    MFI = 100 - (100 / 1 + (posSumMF/negSumMF))
     *    MFI = 100 * (posSumMF/(posSumMF+negSumMF))
@@ -300,9 +303,9 @@
    }
    else
    {
-      /* Skip the unstable period. Do the processing 
+      /* Skip the unstable period. Do the processing
        * but do not write it in the output.
-       */   
+       */
       while( today < startIdx )
       {
          posSumMF -= CIRCBUF_REF(mflow[mflow_Idx])positive;
@@ -384,7 +387,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -459,7 +461,7 @@
 /* Generated */        return ENUM_VALUE(RetCode,TA_BAD_PARAM,BadParam);
 /* Generated */     #endif 
 /* Generated */  #endif 
-/* Generated */    CIRCBUF_INIT_CLASS( mflow, MoneyFlow, optInTimePeriod );   
+/* Generated */    CIRCBUF_INIT_CLASS( mflow, MoneyFlow, optInTimePeriod );
 /* Generated */    VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
 /* Generated */    VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
 /* Generated */    lookbackTotal = optInTimePeriod + TA_GLOBALS_UNSTABLE_PERIOD(TA_FUNC_UNST_MFI,Mfi);

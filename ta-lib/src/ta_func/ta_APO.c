@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -61,6 +61,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -245,10 +248,10 @@
          return ENUM_VALUE(RetCode,TA_ALLOC_ERR,AllocErr);
    #endif
 
-   retCode = FUNCTION_CALL(INT_PO)( startIdx, endIdx,                        
+   retCode = FUNCTION_CALL(INT_PO)( startIdx, endIdx,
                                     inReal,
-                                    optInFastPeriod, 
-                                    optInSlowPeriod, 
+                                    optInFastPeriod,
+                                    optInSlowPeriod,
                                     optInMAType,
                                     outBegIdx,
                                     outNBElement,
@@ -273,8 +276,8 @@
  enum class Core::RetCode Core::TA_INT_PO( int    startIdx,
                                            int    endIdx,
 									       SubArray<double>^ inReal,
-                                           int    optInFastPeriod, 
-                                           int    optInSlowPeriod, 
+                                           int    optInFastPeriod,
+                                           int    optInSlowPeriod,
 										   MAType    optInMethod_2,
                                            [Out]int% outBegIdx,
                                            [Out]int% outNBElement,
@@ -286,8 +289,8 @@
  enum class Core::RetCode Core::TA_INT_PO( int    startIdx,
                                            int    endIdx,
 									       cli::array<INPUT_TYPE>^ inReal,
-                                           int    optInFastPeriod, 
-                                           int    optInSlowPeriod, 
+                                           int    optInFastPeriod,
+                                           int    optInSlowPeriod,
 										   MAType    optInMethod_2,
                                            [Out]int% outBegIdx,
                                            [Out]int% outNBElement,
@@ -298,8 +301,8 @@
 RetCode TA_INT_PO( int        startIdx,
                    int        endIdx,
                    INPUT_TYPE inReal[],
-                   int        optInFastPeriod, 
-                   int        optInSlowPeriod, 
+                   int        optInFastPeriod,
+                   int        optInSlowPeriod,
                    MAType  optInMethod_2,
                    MInteger   outBegIdx,
                    MInteger   outNBElement,
@@ -311,8 +314,8 @@ RetCode TA_INT_PO( int        startIdx,
 TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
                               int    endIdx,
                               const INPUT_TYPE *inReal,
-                              int    optInFastPeriod, 
-                              int    optInSlowPeriod, 
+                              int    optInFastPeriod,
+                              int    optInSlowPeriod,
                               TA_MAType optInMethod_2,
                               int   *outBegIdx,
                               int   *outNBElement,
@@ -346,17 +349,17 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
    /* Calculate the fast MA into the tempBuffer. */
    retCode = FUNCTION_CALL(MA)( startIdx, endIdx,
                                 inReal,
-                                optInFastPeriod, 
-                                optInMethod_2,                    
+                                optInFastPeriod,
+                                optInMethod_2,
                                 VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2),
 							    tempBuffer );
 
    if( retCode == ENUM_VALUE(RetCode,TA_SUCCESS,Success) )
    {
       /* Calculate the slow MA into the output. */
-      retCode = FUNCTION_CALL(MA)( startIdx, endIdx,                       
+      retCode = FUNCTION_CALL(MA)( startIdx, endIdx,
                                    inReal,
-                                   optInSlowPeriod, 
+                                   optInSlowPeriod,
                                    optInMethod_2,
                                    VALUE_HANDLE_OUT(outBegIdx1), VALUE_HANDLE_OUT(outNbElement1),
 							       outReal );
@@ -366,7 +369,7 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
          tempInteger = VALUE_HANDLE_GET(outBegIdx1) - VALUE_HANDLE_GET(outBegIdx2);
          if( doPercentageOutput != 0 )
          {
-            /* Calculate ((fast MA)-(slow MA))/(slow MA) in the output. */   
+            /* Calculate ((fast MA)-(slow MA))/(slow MA) in the output. */
             for( i=0,j=tempInteger; i < VALUE_HANDLE_GET(outNbElement1); i++, j++ )
             {
                tempReal = outReal[i];
@@ -378,7 +381,7 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
          }
          else
          {
-            /* Calculate (fast MA)-(slow MA) in the output. */   
+            /* Calculate (fast MA)-(slow MA) in the output. */
             for( i=0,j=tempInteger; i < VALUE_HANDLE_GET(outNbElement1); i++, j++ )
                outReal[i] = tempBuffer[j]-outReal[i];
          }
@@ -401,7 +404,6 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -484,10 +486,10 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */       if( !tempBuffer )
 /* Generated */          return ENUM_VALUE(RetCode,TA_ALLOC_ERR,AllocErr);
 /* Generated */    #endif
-/* Generated */    retCode = FUNCTION_CALL(INT_PO)( startIdx, endIdx,                        
+/* Generated */    retCode = FUNCTION_CALL(INT_PO)( startIdx, endIdx,
 /* Generated */                                     inReal,
-/* Generated */                                     optInFastPeriod, 
-/* Generated */                                     optInSlowPeriod, 
+/* Generated */                                     optInFastPeriod,
+/* Generated */                                     optInSlowPeriod,
 /* Generated */                                     optInMAType,
 /* Generated */                                     outBegIdx,
 /* Generated */                                     outNBElement,
@@ -504,8 +506,8 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */  enum class Core::RetCode Core::TA_INT_PO( int    startIdx,
 /* Generated */                                            int    endIdx,
 /* Generated */ 									       SubArray<double>^ inReal,
-/* Generated */                                            int    optInFastPeriod, 
-/* Generated */                                            int    optInSlowPeriod, 
+/* Generated */                                            int    optInFastPeriod,
+/* Generated */                                            int    optInSlowPeriod,
 /* Generated */ 										   MAType    optInMethod_2,
 /* Generated */                                            [Out]int% outBegIdx,
 /* Generated */                                            [Out]int% outNBElement,
@@ -516,8 +518,8 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */  enum class Core::RetCode Core::TA_INT_PO( int    startIdx,
 /* Generated */                                            int    endIdx,
 /* Generated */ 									       cli::array<INPUT_TYPE>^ inReal,
-/* Generated */                                            int    optInFastPeriod, 
-/* Generated */                                            int    optInSlowPeriod, 
+/* Generated */                                            int    optInFastPeriod,
+/* Generated */                                            int    optInSlowPeriod,
 /* Generated */ 										   MAType    optInMethod_2,
 /* Generated */                                            [Out]int% outBegIdx,
 /* Generated */                                            [Out]int% outNBElement,
@@ -528,8 +530,8 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */ RetCode TA_INT_PO( int        startIdx,
 /* Generated */                    int        endIdx,
 /* Generated */                    INPUT_TYPE inReal[],
-/* Generated */                    int        optInFastPeriod, 
-/* Generated */                    int        optInSlowPeriod, 
+/* Generated */                    int        optInFastPeriod,
+/* Generated */                    int        optInSlowPeriod,
 /* Generated */                    MAType  optInMethod_2,
 /* Generated */                    MInteger   outBegIdx,
 /* Generated */                    MInteger   outNBElement,
@@ -540,8 +542,8 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */                               int    endIdx,
 /* Generated */                               const INPUT_TYPE *inReal,
-/* Generated */                               int    optInFastPeriod, 
-/* Generated */                               int    optInSlowPeriod, 
+/* Generated */                               int    optInFastPeriod,
+/* Generated */                               int    optInSlowPeriod,
 /* Generated */                               TA_MAType optInMethod_2,
 /* Generated */                               int   *outBegIdx,
 /* Generated */                               int   *outNBElement,
@@ -566,15 +568,15 @@ TA_RetCode TA_PREFIX(INT_PO)( int    startIdx,
 /* Generated */    }
 /* Generated */    retCode = FUNCTION_CALL(MA)( startIdx, endIdx,
 /* Generated */                                 inReal,
-/* Generated */                                 optInFastPeriod, 
-/* Generated */                                 optInMethod_2,                    
+/* Generated */                                 optInFastPeriod,
+/* Generated */                                 optInMethod_2,
 /* Generated */                                 VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2),
 /* Generated */ 							    tempBuffer );
 /* Generated */    if( retCode == ENUM_VALUE(RetCode,TA_SUCCESS,Success) )
 /* Generated */    {
-/* Generated */       retCode = FUNCTION_CALL(MA)( startIdx, endIdx,                       
+/* Generated */       retCode = FUNCTION_CALL(MA)( startIdx, endIdx,
 /* Generated */                                    inReal,
-/* Generated */                                    optInSlowPeriod, 
+/* Generated */                                    optInSlowPeriod,
 /* Generated */                                    optInMethod_2,
 /* Generated */                                    VALUE_HANDLE_OUT(outBegIdx1), VALUE_HANDLE_OUT(outNbElement1),
 /* Generated */ 							       outReal );

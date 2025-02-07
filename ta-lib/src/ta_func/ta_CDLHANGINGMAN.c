@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -42,7 +42,7 @@
  *
  *  MMDDYY BY   Description
  *  -------------------------------------------------------------------
- *  102304 AC   Creation           
+ *  102304 AC   Creation
  *
  */
 
@@ -59,6 +59,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -213,7 +216,7 @@
    ShadowVeryShortTrailingIdx = startIdx - TA_CANDLEAVGPERIOD(ShadowVeryShort);
    NearPeriodTotal = 0;
    NearTrailingIdx = startIdx -1 - TA_CANDLEAVGPERIOD(Near);
-   
+
    i = BodyTrailingIdx;
    while( i < startIdx ) {
         BodyPeriodTotal += TA_CANDLERANGE( BodyShort, i );
@@ -257,18 +260,18 @@
             outInteger[outIdx++] = -100;
         else
             outInteger[outIdx++] = 0;
-        /* add the current range and subtract the first range: this is done after the pattern recognition 
+        /* add the current range and subtract the first range: this is done after the pattern recognition
          * when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
          */
-        BodyPeriodTotal += TA_CANDLERANGE( BodyShort, i ) 
+        BodyPeriodTotal += TA_CANDLERANGE( BodyShort, i )
             - TA_CANDLERANGE( BodyShort, BodyTrailingIdx );
-        ShadowLongPeriodTotal += TA_CANDLERANGE( ShadowLong, i ) 
+        ShadowLongPeriodTotal += TA_CANDLERANGE( ShadowLong, i )
             - TA_CANDLERANGE( ShadowLong, ShadowLongTrailingIdx );
-        ShadowVeryShortPeriodTotal += TA_CANDLERANGE( ShadowVeryShort, i ) 
+        ShadowVeryShortPeriodTotal += TA_CANDLERANGE( ShadowVeryShort, i )
             - TA_CANDLERANGE( ShadowVeryShort, ShadowVeryShortTrailingIdx );
-        NearPeriodTotal += TA_CANDLERANGE( Near, i-1 ) 
+        NearPeriodTotal += TA_CANDLERANGE( Near, i-1 )
             - TA_CANDLERANGE( Near, NearTrailingIdx );
-        i++; 
+        i++;
         BodyTrailingIdx++;
         ShadowLongTrailingIdx++;
         ShadowVeryShortTrailingIdx++;
@@ -285,7 +288,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -399,15 +401,15 @@
 /* Generated */             outInteger[outIdx++] = -100;
 /* Generated */         else
 /* Generated */             outInteger[outIdx++] = 0;
-/* Generated */         BodyPeriodTotal += TA_CANDLERANGE( BodyShort, i ) 
+/* Generated */         BodyPeriodTotal += TA_CANDLERANGE( BodyShort, i )
 /* Generated */             - TA_CANDLERANGE( BodyShort, BodyTrailingIdx );
-/* Generated */         ShadowLongPeriodTotal += TA_CANDLERANGE( ShadowLong, i ) 
+/* Generated */         ShadowLongPeriodTotal += TA_CANDLERANGE( ShadowLong, i )
 /* Generated */             - TA_CANDLERANGE( ShadowLong, ShadowLongTrailingIdx );
-/* Generated */         ShadowVeryShortPeriodTotal += TA_CANDLERANGE( ShadowVeryShort, i ) 
+/* Generated */         ShadowVeryShortPeriodTotal += TA_CANDLERANGE( ShadowVeryShort, i )
 /* Generated */             - TA_CANDLERANGE( ShadowVeryShort, ShadowVeryShortTrailingIdx );
-/* Generated */         NearPeriodTotal += TA_CANDLERANGE( Near, i-1 ) 
+/* Generated */         NearPeriodTotal += TA_CANDLERANGE( Near, i-1 )
 /* Generated */             - TA_CANDLERANGE( Near, NearTrailingIdx );
-/* Generated */         i++; 
+/* Generated */         i++;
 /* Generated */         BodyTrailingIdx++;
 /* Generated */         ShadowLongTrailingIdx++;
 /* Generated */         ShadowVeryShortTrailingIdx++;

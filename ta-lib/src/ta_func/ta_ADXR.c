@@ -1,4 +1,4 @@
-/* TA-LIB Copyright (c) 1999-2008, Mario Fortier
+/* TA-LIB Copyright (c) 1999-2024, Mario Fortier
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -60,6 +60,9 @@
 /* Generated */ #elif defined( _JAVA )
 /* Generated */    #include "ta_defs.h"
 /* Generated */    #include "ta_java_defs.h"
+/* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
+/* Generated */ #elif defined( _RUST )
+/* Generated */    #include "ta_defs.h"
 /* Generated */    #define TA_INTERNAL_ERROR(Id) (RetCode.InternalError)
 /* Generated */ #else
 /* Generated */    #include <string.h>
@@ -211,7 +214,7 @@
     *
     * This was understandable in the context that at the time the book
     * was written, most user were doing the calculation by hand.
-    * 
+    *
     * For a computer, rounding is unnecessary (and even problematic when inputs
     * are close to 1).
     *
@@ -248,7 +251,7 @@
                                  inHigh, inLow, inClose,
                                  optInTimePeriod, outBegIdx, outNBElement, adx );
 
-   if( retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) )      
+   if( retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) )
    {
       ARRAY_FREE( adx );
       return retCode;
@@ -272,7 +275,6 @@
 /**** START GENCODE SECTION 5 - DO NOT DELETE THIS LINE ****/
 /* Generated */ 
 /* Generated */ #define  USE_SINGLE_PRECISION_INPUT
-/* Generated */ #undef  TA_LIB_PRO
 /* Generated */ #if !defined( _MANAGED ) && !defined( _JAVA )
 /* Generated */    #undef   TA_PREFIX
 /* Generated */    #define  TA_PREFIX(x) TA_S_##x
@@ -361,7 +363,7 @@
 /* Generated */    retCode = FUNCTION_CALL(ADX)( startIdx-(optInTimePeriod-1), endIdx,
 /* Generated */                                  inHigh, inLow, inClose,
 /* Generated */                                  optInTimePeriod, outBegIdx, outNBElement, adx );
-/* Generated */    if( retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) )      
+/* Generated */    if( retCode != ENUM_VALUE(RetCode,TA_SUCCESS,Success) )
 /* Generated */    {
 /* Generated */       ARRAY_FREE( adx );
 /* Generated */       return retCode;
